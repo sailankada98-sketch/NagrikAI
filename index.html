@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NagrikAI — Citizen Voices. Smarter Development.</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+:root{
+ --navy:#071A33;--blue:#0B2A4A;--saffron:#F59E0B;--teal:#0F766E;
+ --green:#22A06B;--bg:#F5F8FC;--muted:#64748B;--border:#E2E8F0;
+ --white:#fff;--red:#DC2626;
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Manrope,Arial,sans-serif;background:var(--bg);color:var(--navy);line-height:1.55}
+a{text-decoration:none;color:inherit}button,input,select,textarea{font:inherit}
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.nav-inner{max-width:1220px;margin:auto;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+.logo{display:flex;align-items:center;gap:10px;font-size:21px;font-weight:800}
+.logo-mark{width:38px;height:38px;border-radius:12px;background:var(--navy);position:relative;display:grid;place-items:center;color:white}
+.logo-mark:before{content:"";width:17px;height:13px;border:2px solid var(--saffron);border-radius:7px 7px 7px 2px}
+.logo-mark:after{content:"";position:absolute;width:5px;height:5px;border-radius:50%;background:var(--teal);right:5px;top:7px}
+.navlinks{display:flex;gap:25px;font-size:14px;font-weight:650;color:#334155}
+.navlinks a:hover{color:var(--teal)}
+.btn{border:0;border-radius:11px;padding:12px 18px;font-weight:750;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.btn-primary{background:var(--saffron);color:#171717}.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px #f59e0b33}
+.btn-dark{background:var(--navy);color:white}.btn-light{background:white;border:1px solid var(--border)}
+.menu{display:none;background:none;border:0;font-size:25px}
+.hero{background:radial-gradient(circle at 80% 25%,#16436c 0,#0b2a4a 32%,#071a33 70%);color:#fff;padding:92px 22px 80px;overflow:hidden}
+.hero-grid{max-width:1220px;margin:auto;display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center}
+.badge,.pill{display:inline-flex;align-items:center;gap:7px;padding:7px 11px;border-radius:999px;background:#ffffff12;border:1px solid #ffffff20;font-size:12px;font-weight:750}
+.hero h1{font-size:clamp(44px,5.3vw,72px);line-height:1.02;margin:20px 0}
+.hero p{font-size:18px;color:#cbd5e1;max-width:620px}
+.hero-actions{display:flex;gap:12px;margin:30px 0}
+.map-card{height:470px;border-radius:28px;background:linear-gradient(145deg,#0e3659,#08213e);border:1px solid #ffffff18;box-shadow:0 30px 80px #0005;position:relative;overflow:hidden}
+.map-title{position:absolute;top:18px;left:20px;z-index:2}.demo{font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--saffron)}
+.india{position:absolute;left:50%;top:51%;transform:translate(-50%,-50%);width:260px;height:330px;background:#164b6f;clip-path:polygon(38% 0,61% 4%,67% 16%,78% 22%,74% 34%,88% 46%,73% 53%,79% 66%,67% 71%,61% 88%,54% 100%,44% 87%,35% 77%,24% 68%,29% 57%,16% 48%,25% 39%,20% 28%,31% 22%,27% 10%);filter:drop-shadow(0 0 30px #22a06b55)}
+.marker{position:absolute;width:13px;height:13px;border-radius:50%;background:var(--saffron);box-shadow:0 0 0 7px #f59e0b22,0 0 25px #f59e0b;animation:pulse 2s infinite}
+.m1{left:57%;top:35%}.m2{left:45%;top:51%;background:#ef4444;box-shadow:0 0 0 7px #ef444422,0 0 25px #ef4444}.m3{left:63%;top:57%;background:#fbbf24}.m4{left:50%;top:69%;background:#22a06b}
+@keyframes pulse{50%{transform:scale(1.25);opacity:.7}}
+.flow{position:absolute;bottom:18px;left:20px;right:20px;display:flex;justify-content:space-between;font-size:11px;color:#cbd5e1}
+section{padding:86px 22px}.container{max-width:1220px;margin:auto}.eyebrow{color:var(--teal);font-size:12px;font-weight:850;text-transform:uppercase;letter-spacing:.12em}.section-title{font-size:42px;line-height:1.1;margin:9px 0 14px}.section-sub{color:var(--muted);max-width:720px}
+.steps{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:42px}.step{background:white;border:1px solid var(--border);border-radius:18px;padding:20px;min-height:210px;position:relative}.num{width:34px;height:34px;border-radius:10px;background:#e9f5f3;color:var(--teal);display:grid;place-items:center;font-weight:800}.step h3{margin:18px 0 8px}.step p{font-size:13px;color:var(--muted)}
+.request{background:#eaf1f7}.request-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:30px;align-items:start}
+.panel{background:white;border:1px solid var(--border);border-radius:22px;padding:25px;box-shadow:0 12px 40px #071a3308}.form-group{margin:15px 0}.label{font-size:12px;font-weight:800;margin-bottom:7px;display:block}.input,textarea,select{width:100%;border:1px solid var(--border);border-radius:11px;padding:12px;background:white;outline:none}.input:focus,textarea:focus,select:focus{border-color:var(--teal);box-shadow:0 0 0 3px #0f766e15}
+textarea{min-height:110px;resize:vertical}.voice{width:76px;height:76px;border-radius:50%;border:0;background:var(--navy);color:#fff;font-size:29px;cursor:pointer;box-shadow:0 10px 30px #071a3330}.voice.recording{background:var(--red);animation:pulse 1s infinite}
+.wave{display:none;height:50px;align-items:center;gap:4px;margin:12px 0}.wave.active{display:flex}.wave i{width:4px;background:var(--teal);border-radius:5px;animation:wave .7s infinite ease-in-out}.wave i:nth-child(2){animation-delay:.1s}.wave i:nth-child(3){animation-delay:.2s}.wave i:nth-child(4){animation-delay:.3s}.wave i:nth-child(5){animation-delay:.4s}
+@keyframes wave{50%{height:42px}0%,100%{height:10px}}
+.result{display:none;margin-top:20px;border:1px solid #bfe5db;background:#f2fbf8;border-radius:16px;padding:18px}.result.show{display:block}.tag{display:inline-block;padding:5px 8px;border-radius:7px;background:#dff3ed;color:var(--teal);font-size:11px;font-weight:800}
+.pipeline{margin-top:28px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.pipe{padding:13px;border:1px solid var(--border);border-radius:12px;text-align:center;font-size:12px;background:#fff;color:var(--muted)}.pipe.active{border-color:var(--teal);color:var(--teal);background:#effaf7}
+.dashboard{background:white}.dash-head{display:flex;justify-content:space-between;gap:20px;align-items:end}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin:30px 0}.metric{padding:20px;border:1px solid var(--border);border-radius:18px}.metric .value{font-size:31px;font-weight:850;margin-top:5px}.metric small{color:var(--muted)}
+.dash-grid{display:grid;grid-template-columns:1.7fr .8fr;gap:20px}.map-demo{height:480px;background:#eaf2f7;border-radius:20px;border:1px solid var(--border);position:relative;overflow:hidden}.map-demo .india{background:#b9d7df;width:280px;height:350px}.hotspot{position:absolute;width:16px;height:16px;border-radius:50%;background:#ef4444;box-shadow:0 0 0 8px #ef444422;cursor:pointer}.h1{left:57%;top:31%}.h2{left:46%;top:48%;background:#f59e0b;box-shadow:0 0 0 8px #f59e0b22}.h3{left:62%;top:57%;background:#f59e0b;box-shadow:0 0 0 8px #f59e0b22}.h4{left:49%;top:68%;background:#22a06b;box-shadow:0 0 0 8px #22a06b22}
+.map-label{position:absolute;top:15px;left:15px;background:#fff;border:1px solid var(--border);padding:9px 12px;border-radius:10px;font-size:11px;font-weight:800}
+.detail{min-height:480px}.detail h3{margin-top:5px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mini{background:#f7fafc;border:1px solid var(--border);border-radius:12px;padding:12px}.mini b{font-size:20px;display:block}.evidence{margin-top:16px}.evidence div{padding:11px 0;border-bottom:1px solid var(--border);font-size:13px;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:35px}.card{background:white;border:1px solid var(--border);border-radius:20px;padding:24px}.card h3{margin-top:8px}.card p{color:var(--muted);font-size:14px}.card ul{padding-left:20px;color:#475569;font-size:13px}.dark{background:var(--navy);color:white}.dark .section-sub{color:#cbd5e1}.languages{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-top:30px}.lang{padding:17px;border:1px solid #ffffff18;border-radius:15px;background:#ffffff08;text-align:center}.arch{display:grid;gap:12px;max-width:800px;margin:35px auto}.arch-row{padding:20px;border-radius:16px;background:#ffffff0b;border:1px solid #ffffff18;text-align:center}.arrow{text-align:center;color:var(--saffron)}
+.resp{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:35px}.responsible{padding:22px;border:1px solid var(--border);border-radius:17px;background:white}.impact{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}.timeline{display:flex;align-items:center;gap:0;margin-top:35px}.timeline div{flex:1;text-align:center;font-size:12px;font-weight:750}.dot{width:30px;height:30px;background:var(--teal);color:white;border-radius:50%;margin:auto auto 8px;display:grid;place-items:center}
+.cta{background:radial-gradient(circle at 75% 50%,#16436c,#071a33 65%);color:#fff;text-align:center}.cta .section-sub{margin:auto;color:#cbd5e1}.cta h2{font-size:52px;max-width:850px;margin:10px auto}.footer{background:#041225;color:#cbd5e1;padding:45px 22px}.footer-inner{max-width:1220px;margin:auto;display:flex;justify-content:space-between;gap:30px}.footer-links{display:flex;gap:22px;font-size:13px}.fine{font-size:11px;color:#7890aa;margin-top:20px}
+@media(max-width:900px){.navlinks{display:none}.menu{display:block}.hero-grid,.request-grid,.dash-grid,.impact{grid-template-columns:1fr}.steps{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.languages{grid-template-columns:repeat(2,1fr)}.resp{grid-template-columns:repeat(2,1fr)}.hero{padding-top:60px}.map-card{height:390px}.timeline{display:grid;grid-template-columns:1fr;gap:14px}.timeline div{display:flex;align-items:center;gap:12px}.dot{margin:0}.footer-inner{flex-direction:column}.footer-links{flex-wrap:wrap}}
+@media(max-width:520px){section{padding:60px 16px}.hero{padding:55px 16px}.hero h1{font-size:43px}.hero-actions{flex-direction:column}.steps,.metrics{grid-template-columns:1fr}.languages,.resp{grid-template-columns:1fr 1fr}.section-title{font-size:34px}.pipeline{grid-template-columns:1fr 1fr}.map-demo{height:390px}.nav-inner{padding:0 16px}}
+</style>
+</head>
+<body>
+<nav class="nav"><div class="nav-inner">
+<a class="logo" href="#"><span class="logo-mark"></span>NagrikAI</a>
+<div class="navlinks"><a href="#how">How It Works</a><a href="#dashboard">Intelligence Dashboard</a><a href="#impact">Impact</a><a href="#technology">Technology</a><a href="#responsible">Responsible AI</a></div>
+<a class="btn btn-primary" href="#dashboard">Launch Demo</a><button class="menu" onclick="toggleMenu()">☰</button>
+</div></nav>
+
+<header class="hero"><div class="hero-grid"><div>
+<span class="badge">Multilingual • AI-Powered • Open • Data-Driven</span>
+<h1>Turn Citizen Voices Into Smarter Development</h1>
+<p>NagrikAI uses multilingual AI and public data to identify infrastructure gaps, surface development hotspots, and help policymakers make evidence-backed decisions.</p>
+<div class="hero-actions"><a class="btn btn-primary" href="#dashboard">Explore the Intelligence Dashboard →</a><a class="btn btn-light" href="#how">How NagrikAI Works</a></div>
+<div class="demo">Prototype / Demo Data</div>
+</div>
+<div class="map-card"><div class="map-title"><b>Development Demand Map</b><br><span style="color:#94a3b8;font-size:12px">Citizen signals → spatial intelligence</span></div><div class="india"></div><span class="marker m1"></span><span class="marker m2"></span><span class="marker m3"></span><span class="marker m4"></span><div class="flow"><span>Citizen Voices</span><span>AI Understanding</span><span>Development Intelligence</span></div></div></div></header>
+
+<section id="how"><div class="container"><span class="eyebrow">The workflow</span><h2 class="section-title">From Voice to Development</h2><p class="section-sub">Transform unstructured citizen requests into transparent infrastructure intelligence.</p>
+<div class="steps">
+<div class="step"><div class="num">01</div><h3>Listen</h3><p>Citizens submit requests using voice, text, SMS, messaging apps, or web.</p></div>
+<div class="step"><div class="num">02</div><h3>Understand</h3><p>AI detects language, transcribes speech, translates content, and understands the issue.</p></div>
+<div class="step"><div class="num">03</div><h3>Structure</h3><p>Extract location, category, urgency, and relevant entities.</p></div>
+<div class="step"><div class="num">04</div><h3>Combine</h3><p>Combine citizen feedback with demographic, GIS, infrastructure, and investment data.</p></div>
+<div class="step"><div class="num">05</div><h3>Identify</h3><p>Detect demand hotspots, trends, and infrastructure gaps.</p></div>
+<div class="step"><div class="num">06</div><h3>Act & Measure</h3><p>Provide evidence for human review and track outcomes after implementation.</p></div>
+</div></div></section>
+
+<section class="request"><div class="container"><div class="request-grid"><div><span class="eyebrow">Citizen interaction</span><h2 class="section-title">Tell NagrikAI What Your Community Needs</h2><p class="section-sub">Describe a local infrastructure problem in your own language. You don't need to know government terminology.</p><div class="pipeline" id="pipeline"></div></div>
+<div class="panel"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">Community Request</h3><span class="demo">Demo</span></div>
+<div class="form-group"><label class="label">Language</label><select id="language"><option>English</option><option>Hindi</option><option>Telugu</option><option>Tamil</option><option>Kannada</option><option>Malayalam</option><option>Bengali</option><option>Marathi</option><option>Gujarati</option><option>Punjabi</option></select></div>
+<div class="form-group"><label class="label">Describe the issue</label><textarea id="requestText">There is no reliable drinking water in our village.</textarea></div>
+<div class="form-group"><label class="label">Location</label><input class="input" value="Example District"></div>
+<div style="display:flex;align-items:center;gap:18px"><button class="voice" id="voice" onclick="record()">⌕</button><div><b id="voiceText">Voice input</b><div style="font-size:12px;color:#64748b">Simulated microphone interaction</div></div></div><div class="wave" id="wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<button class="btn btn-primary" style="width:100%;margin-top:12px" onclick="analyze()">Analyze Request</button>
+<div class="result" id="result"><span class="tag">Demo Data</span><h3>Water & Sanitation</h3><p><b>Issue:</b> Drinking water shortage</p><p><b>Location:</b> Example District</p><p><b>Priority signals:</b> High citizen demand · Infrastructure gap detected</p><small><b>AI-generated analysis — human review required</b></small></div>
+</div></div></div></section>
+
+<section id="dashboard" class="dashboard"><div class="container"><div class="dash-head"><div><span class="eyebrow">Intelligence dashboard</span><h2 class="section-title">Development Intelligence</h2><p class="section-sub">Explore where citizen demand and infrastructure gaps intersect.</p></div><span class="pill" style="background:#fff7e6;color:#9a6500;border:1px solid #f4d89a">DEMO DATA</span></div>
+<div class="metrics"><div class="metric"><small>Citizen Requests</small><div class="value">12,840</div><small>Demo Data</small></div><div class="metric"><small>Infrastructure Gaps</small><div class="value">37</div><small>Demo Data</small></div><div class="metric"><small>High-Demand Areas</small><div class="value">18</div><small>Demo Data</small></div><div class="metric"><small>Projects Tracked</small><div class="value">24</div><small>Demo Data</small></div></div>
+<div class="dash-grid"><div class="map-demo"><div class="map-label">India • Demand hotspots • Demo Data</div><div class="india"></div><span class="hotspot h1" onclick="hotspot('Healthcare hotspot')"></span><span class="hotspot h2" onclick="hotspot('Water hotspot')"></span><span class="hotspot h3" onclick="hotspot('Education hotspot')"></span><span class="hotspot h4" onclick="hotspot('Connectivity hotspot')"></span></div>
+<div class="panel detail"><span class="demo">Demo Data</span><h3 id="hotTitle">District Development Hotspot</h3><div class="detail-grid"><div class="mini"><small>Citizen Requests</small><b id="req">12,840</b></div><div class="mini"><small>Population Affected</small><b>31,500</b></div><div class="mini"><small>Infrastructure Gap</small><b>27%</b></div><div class="mini"><small>Demand Trend</small><b style="color:var(--teal)">Increasing</b></div></div><div style="margin-top:15px"><canvas id="chart" height="150"></canvas></div><div class="evidence"><b>Evidence for Policymaker Review</b><div>✓ High concentration of citizen requests</div><div>✓ Persistent demand over multiple months</div><div>✓ Infrastructure below illustrative benchmark</div><div>✓ Population exposure identified</div></div><small style="display:block;margin-top:14px;color:var(--muted)">NagrikAI surfaces evidence for human review. It does not automatically make government decisions.</small></div></div></div></section>
+
+<section><div class="container"><span class="eyebrow">Policy intelligence</span><h2 class="section-title">Possible Development Interventions</h2><p class="section-sub">AI-generated options that policymakers can evaluate alongside local context, feasibility, budgets, and public priorities.</p><div class="cards">
+<div class="card"><span class="tag">Option 01</span><h3>Expand Existing Infrastructure</h3><p>Upgrade existing infrastructure to address identified service gaps.</p><ul><li>Evidence: strong</li><li>Expected coverage: +22%</li><li>Affected population: 18,400</li><li>Confidence: 84%</li></ul><small><b>AI-generated analysis — human review required</b></small></div>
+<div class="card"><span class="tag">Option 02</span><h3>Build New Capacity</h3><p>Increase infrastructure capacity where existing services are insufficient.</p><ul><li>Evidence: moderate</li><li>Expected coverage: +31%</li><li>Affected population: 25,700</li><li>Confidence: 77%</li></ul><small><b>AI-generated analysis — human review required</b></small></div>
+<div class="card"><span class="tag">Option 03</span><h3>Improve Accessibility</h3><p>Improve transportation, connectivity, or service access to existing facilities.</p><ul><li>Evidence: moderate</li><li>Expected coverage: +16%</li><li>Affected population: 13,200</li><li>Confidence: 73%</li></ul><small><b>AI-generated analysis — human review required</b></small></div>
+</div></div></section>
+
+<section id="impact"><div class="container"><div class="impact"><div><span class="eyebrow">Impact measurement</span><h2 class="section-title">From Citizen Request to Measurable Impact</h2><p class="section-sub">A feedback loop connecting demand, implementation, citizen feedback, and outcome measurement.</p><div class="timeline"><div><span class="dot">1</span>Citizen Demand</div><div><span class="dot">2</span>Policy Decision</div><div><span class="dot">3</span>Investment</div><div><span class="dot">4</span>Implementation</div><div><span class="dot">5</span>Outcome</div></div></div><div class="panel"><span class="demo">Illustrative Demo Data</span><canvas id="impactChart" height="240"></canvas></div></div></div></section>
+
+<section id="technology" class="dark"><div class="container"><span class="eyebrow" style="color:#f59e0b">Multilingual AI</span><h2 class="section-title">Built for India's Linguistic Diversity</h2><p class="section-sub">Citizens should be able to describe community needs in the language they naturally use.</p><div class="languages"><div class="lang">हिन्दी<br><small>Hindi</small></div><div class="lang">తెలుగు<br><small>Telugu</small></div><div class="lang">தமிழ்<br><small>Tamil</small></div><div class="lang">ಕನ್ನಡ<br><small>Kannada</small></div><div class="lang">മലയാളം<br><small>Malayalam</small></div><div class="lang">বাংলা<br><small>Bengali</small></div><div class="lang">मराठी<br><small>Marathi</small></div><div class="lang">ગુજરાતી<br><small>Gujarati</small></div><div class="lang">ਪੰਜਾਬੀ<br><small>Punjabi</small></div><div class="lang">English</div></div>
+<div class="arch"><div class="arch-row">Citizen Channels — Voice · Text · SMS · Messaging · Web</div><div class="arrow">↓</div><div class="arch-row">AI Language Layer — Speech Recognition · Translation · NLP · LLM</div><div class="arrow">↓</div><div class="arch-row">Citizen Demand + Public Data — Demographics · Infrastructure · GIS · Investment</div><div class="arrow">↓</div><div class="arch-row">Intelligence Engine — Clustering · Hotspots · Gap Analysis · Impact Measurement</div><div class="arrow">↓</div><div class="arch-row">Policy Intelligence — Dashboard · Evidence · Tracking · Reports · APIs</div></div>
+</div></section>
+
+<section id="responsible"><div class="container"><span class="eyebrow">Digital public good</span><h2 class="section-title">Responsible AI for Public Infrastructure</h2><p class="section-sub">NagrikAI is designed around openness, interoperability, privacy, multilingual access, and transparent AI.</p><div class="resp">
+<div class="responsible"><b>Human oversight</b><p>People remain accountable for decisions.</p></div><div class="responsible"><b>Data minimization</b><p>Collect only what is needed for the service.</p></div><div class="responsible"><b>Privacy protection</b><p>Protect citizen information by design.</p></div><div class="responsible"><b>Explainable AI</b><p>Show evidence behind insights.</p></div><div class="responsible"><b>Auditability</b><p>Support traceable decisions and outputs.</p></div><div class="responsible"><b>Bias monitoring</b><p>Continuously check for uneven outcomes.</p></div><div class="responsible"><b>Confidence indicators</b><p>Communicate uncertainty clearly.</p></div><div class="responsible"><b>Secure access</b><p>Use appropriate controls for sensitive systems.</p></div>
+</div><div style="margin-top:30px;padding:24px;border-radius:18px;background:#eff8f5;border:1px solid #ccebe1;color:var(--teal);font-size:19px;font-weight:800">NagrikAI supports public decision-making; it does not replace accountable human decision-makers.</div></div></section>
+
+<section class="cta"><div class="container"><h2>Every Community Has a Voice.</h2><p class="section-sub">NagrikAI helps governments hear it — turning citizen feedback into transparent, evidence-backed development intelligence.</p><div class="hero-actions" style="justify-content:center"><a class="btn btn-primary" href="#dashboard">Explore Dashboard</a><a class="btn btn-light" href="#technology">View Platform Architecture</a></div><div class="demo">Prototype / Hackathon Demonstration</div></div></section>
+
+<footer class="footer"><div class="footer-inner"><div><div class="logo" style="color:white"><span class="logo-mark"></span>NagrikAI</div><div style="margin-top:8px">Citizen Voices. Smarter Development.</div><div class="fine">Prototype / Hackathon Demonstration<br>© 2026 NagrikAI · No affiliation with any Indian government ministry or agency.</div></div><div class="footer-links"><a href="#how">About</a><a href="#technology">Technology</a><a href="#responsible">Privacy</a><a href="#responsible">Responsible AI</a><a href="#technology">Open Source</a><a href="#">Contact</a></div></div></footer>
+
+<script>
+const pipeNames=['Language Detection','Transcription','Translation','Issue Detection','Location Extraction','Structured Request'];
+const pipe=document.getElementById('pipeline');
+pipeNames.forEach((x,i)=>{const d=document.createElement('div');d.className='pipe';d.textContent=x;d.id='p'+i;pipe.appendChild(d)});
+function analyze(){
+ document.getElementById('result').classList.remove('show');
+ let i=0; const timer=setInterval(()=>{document.querySelectorAll('.pipe').forEach(x=>x.classList.remove('active')); if(i<pipeNames.length)document.getElementById('p'+i).classList.add('active');i++; if(i>pipeNames.length){clearInterval(timer);document.getElementById('result').classList.add('show')}},420);
+}
+function record(){
+ const b=document.getElementById('voice'),w=document.getElementById('wave'),t=document.getElementById('voiceText');
+ b.classList.add('recording');w.classList.add('active');t.textContent='Listening...';
+ setTimeout(()=>{b.classList.remove('recording');w.classList.remove('active');t.textContent='Voice captured (demo)';},3000);
+}
+function hotspot(name){document.getElementById('hotTitle').textContent=name;document.getElementById('req').textContent=name.includes('Water')?'12,840':name.includes('Education')?'8,420':name.includes('Healthcare')?'6,730':'4,980'}
+function toggleMenu(){alert('On smaller screens, navigation collapses into this menu. Use the section buttons or scroll to navigate in this prototype.')}
+new Chart(document.getElementById('chart'),{type:'line',data:{labels:['Jan','Feb','Mar','Apr','May','Jun'],datasets:[{label:'Citizen demand',data:[42,51,59,63,76,84],borderWidth:3,tension:.35}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#eef2f6'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('impactChart'),{type:'bar',data:{labels:['Accessibility','Coverage','Satisfaction','Utilization'],datasets:[{label:'Illustrative change',data:[18,24,72,15],borderWidth:1}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,grid:{color:'#eef2f6'}},x:{grid:{display:false}}}}});
+</script>
+</body>
+</html>
